@@ -6,7 +6,9 @@ export const Layout = () => {
   return (
     <ProtectedRoute>
         <Navbar />
-        <Outlet />
+        <div className="pt-14">
+          <Outlet />
+        </div>
     </ProtectedRoute>
   )
 }

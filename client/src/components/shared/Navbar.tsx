@@ -12,7 +12,7 @@ export const Navbar = () => {
     }
 
     return (
-        <nav className="px-10 py-3 bg-blue-500 flex justify-between">
+        <nav className="px-10 py-3 bg-blue-500 flex justify-between fixed w-full top-0 left-0">
             <p className="text-2xl text-white font-medium">Messenger</p>
 
             <div>
