@@ -7,11 +7,12 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: {
-      "@src/*": '/src/*',
-      "@components/*": '/src/components/*',
-      "@pages/*": '/src/pages/*',
-      "@store/*": '/src/store/*',
-      "@providers/*": '/src/providers/*'
+      "@src/*": './src/*',
+      "@components/*": './src/components/*',
+      "@pages/*": './src/pages/*',
+      "@store/*": './src/store/*',
+      "@providers/*": './src/providers/*',
+      "@services/*": "./src/services/*"
     }
   }
 })

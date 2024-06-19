@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { createWsServer } from '@src/ws';
 import prisma from '@lib/db';
 import { authRouter } from '@routers/auth';
+import cors from 'cors'
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
     res.json({
