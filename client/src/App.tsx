@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { Signup } from '@pages/Signup'
 import { Login } from '@pages/Login'
 import { Home } from "@pages/Home"
+import { Providers } from "@providers/Providers"
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <Providers>
+      <RouterProvider router={router} />
+    </Providers>
   )
 }
 

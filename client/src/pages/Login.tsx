@@ -1,6 +1,11 @@
+import { AuthPage, UserInfo } from "@src/components/auth/AuthPage"
 
 export const Login = () => {
+  const login = async ({ email, password}: UserInfo) => {
+
+  }
+
   return (
-    <div>Login</div>
+    <AuthPage handleSubmit={login} isLogin={true} />
   )
 }
