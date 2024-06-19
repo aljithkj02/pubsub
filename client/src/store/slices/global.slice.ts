@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface InitialState {
+export interface GlobalInitialState {
     loading: boolean;
 }
 
-const initialState: InitialState = {
+const initialState: GlobalInitialState = {
     loading: false
 }
 

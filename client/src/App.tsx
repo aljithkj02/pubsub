@@ -7,21 +7,21 @@ import { Layout } from "@providers/Layout"
 
 const router = createBrowserRouter([
   {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
     path: '/',
     element: <Layout />,
     children: [
       {
         path: '/',
         element: <Home />
-      }
+      },
+      {
+        path: '/signup',
+        element: <Signup />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
     ]
   },
 ])

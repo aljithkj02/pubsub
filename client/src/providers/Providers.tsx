@@ -8,6 +8,7 @@ interface ProviderProps {
 }
 
 export const Providers = ({ children }: ProviderProps ) => {
+
   return (
     <Provider store={appStore}>
         {children}
