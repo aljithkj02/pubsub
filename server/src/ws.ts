@@ -1,11 +1,11 @@
-import { Server as Websocket } from 'ws'
+import { Server as WebsocketServer, WebSocket } from 'ws'
 import { Server } from 'http'
 
 export const createWsServer = (server: Server) => {
 
-    const wsServer = new Websocket({server});
+    const wsServer = new WebsocketServer({server});
     
-    wsServer.on('connection', (ws) => {
+    wsServer.on('connection', (ws: WebSocket) => {
         console.log('A new client connected!');
 
         ws.on('message', (message) => {
