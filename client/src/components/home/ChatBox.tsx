@@ -51,7 +51,7 @@ export const ChatBox = () => {
   }
 
   return (
-    <div className="bg-yellow-200 max-h-[91.8vh] h-screen overflow-y-auto relative">
+    <div className="bg-yellow-200 max-h-[91.8vh] h-screen overflow-y-auto relative -z-10">
 
       <div className="bg-violet-600 px-8 py-4 text-white font-semibold absolute w-full top-0">
         <p className="text-lg">Room Name</p>
