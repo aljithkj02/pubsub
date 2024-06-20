@@ -1,5 +1,6 @@
 import { getMessages } from "@src/services/chat";
 import { Message } from "@src/services/types";
+import { websocketManager } from "@src/services/ws";
 import { StateType } from "@src/store/appStore";
 import moment from "moment";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
@@ -12,6 +13,11 @@ export const ChatBox = () => {
 
   useEffect(() => {
     selectedRoom && fetchMessages();
+    const socket = websocketManager.getSocket();
+
+    socket.addEventListener("message", event => {
+      console.log("Message from server ", event.data)
+    });
   }, [selectedRoom])
 
   const handleChangeText = (e: ChangeEvent<HTMLInputElement>) => {
