@@ -1,4 +1,4 @@
-import { getAllRooms } from "@controllers/room.controller";
+import { addRoom, getAllRooms } from "@controllers/room.controller";
 import { authMiddleware } from "@lib/middlewares/auth.middleware";
 import { Router } from "express";
 
@@ -6,3 +6,4 @@ import { Router } from "express";
 export const roomRouter = Router();
 
 roomRouter.get('/', authMiddleware, getAllRooms);
+roomRouter.post('/', authMiddleware, addRoom);
