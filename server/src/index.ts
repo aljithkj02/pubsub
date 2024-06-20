@@ -3,8 +3,8 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import { createWsServer } from '@src/ws';
 import prisma from '@lib/db';
-import { authRouter } from '@routers/auth';
 import cors from 'cors'
+import { allRouter } from '@routers/index';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.get('/', (req: Request, res: Response) => {
     })
 })
 
-app.use('/api', authRouter);
+app.use('/api', allRouter);
 
 server.listen(8000, async () => {
     createWsServer(server);
