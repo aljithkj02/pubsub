@@ -53,3 +53,43 @@ export const addRoom = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const getAllMessages = async (req: Request, res: Response) => {
+    try {
+        const roomId = req.params.id;
+
+        const room = await prisma.room.findUnique({ where: { id: Number(roomId) }});
+        if (!room) {
+            return res.json({
+                status: false,
+                message: "No such room exist!"
+            })
+        }
+        
+        const messages = await prisma.message.findMany({
+            where: {
+                roomId: Number(roomId)
+            },
+            include: {
+                sender: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+
+        return res.json({
+            status: true,
+            data: messages.map((item) => ({
+                ...item,
+                me: item.senderId === req.user.id
+            }))
+        })
+    } catch (error) {
+        res.json({
+            status: false,
+            message: (error as Error).message
+        })
+    }
+}
