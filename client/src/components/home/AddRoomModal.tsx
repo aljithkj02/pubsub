@@ -14,7 +14,7 @@ export const AddRoomModal = ({ onClose, onAdd }: AddRoomModalProps) => {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full h-[100vh] bg-black bg-opacity-50 flex justify-center items-center z-40"
+        <div className="fixed top-0 left-0 w-full h-[100vh] bg-black bg-opacity-50 flex justify-center items-center"
             onClick={onClose}
         >
             <div className="w-[30%] bg-white px-10 py-6 rounded-lg" onClick={(e) => e.stopPropagation()}>

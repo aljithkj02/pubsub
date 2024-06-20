@@ -22,11 +22,13 @@ export const Layout = () => {
 
   return (
     <ProtectedRoute>
+      <div className="select-none">
         <Navbar />
         <div className="pt-14">
           <Outlet />
         </div>
         { loading && <Loader />}
+      </div>
     </ProtectedRoute>
   )
 }
