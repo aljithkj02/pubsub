@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AddRoomModal } from '@components/home/AddRoomModal'
+import { createRoom } from "@src/services/chat";
 
 export const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
@@ -17,7 +18,8 @@ export const Navbar = () => {
     const handleShow = () => setShowModal(true);
 
     const handleAdd = async (text: string) => {
-        console.log({text})
+        await createRoom({ name: text });
+        setShowModal(false);
     }
 
     return (
