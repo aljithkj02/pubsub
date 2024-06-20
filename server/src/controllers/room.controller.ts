@@ -81,9 +81,10 @@ export const getAllMessages = async (req: Request, res: Response) => {
 
         return res.json({
             status: true,
-            data: messages.map((item) => ({
-                ...item,
-                me: item.senderId === req.user.id
+            data: messages.map(({ id, createdAt, roomId, senderId, text, sender}) => ({
+                id, roomId, senderId, createdAt, text,
+                sender: sender.name,
+                me: senderId === req.user.id
             }))
         })
     } catch (error) {

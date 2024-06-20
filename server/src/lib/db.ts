@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-    console.log('hello')
     return new PrismaClient();
 }
 
