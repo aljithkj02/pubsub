@@ -40,9 +40,10 @@ model Room {
 }
 
 model Message {
-  id       Int @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   senderId Int
   roomId   Int
+  text     String
 
   sender User @relation(fields: [senderId], references: [id])
   room   Room @relation(fields: [roomId], references: [id])
