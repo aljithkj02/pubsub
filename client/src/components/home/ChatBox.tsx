@@ -1,4 +1,6 @@
+import { StateType } from "@src/store/appStore";
 import { ChangeEvent, FormEvent, useState } from "react"
+import { useSelector } from "react-redux";
 
 const chats = [
   {
@@ -40,6 +42,7 @@ const chats = [
 
 export const ChatBox = () => {
   const [text, setText] = useState('');
+  const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
 
   const handleChangeText = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -54,7 +57,9 @@ export const ChatBox = () => {
     <div className="bg-yellow-200 max-h-[91.8vh] h-screen overflow-y-auto relative -z-10">
 
       <div className="bg-violet-600 px-8 py-4 text-white font-semibold absolute w-full top-0">
-        <p className="text-lg">Room Name</p>
+        <p className="text-lg">
+          {selectedRoom?.name || 'Select a room!'}
+        </p>
       </div>
 
       <div className="mt-20 px-5 flex flex-col gap-2 max-h-[70vh] overflow-y-scroll pb-2">

@@ -1,10 +1,15 @@
 import { getAllRooms } from "@src/services/chat";
 import { Room } from "@src/services/types";
+import { StateType } from "@src/store/appStore";
+import { setSelectedRoom } from "@src/store/slices/room.slice";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Rooms = () => {
 
   const [rooms, setRooms] = useState<Room[]>([]);
+  const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchAllRooms();
@@ -15,14 +20,21 @@ export const Rooms = () => {
     setRooms(res);
   }
 
+  const handleSelect = (room: Room) => {
+    dispatch(setSelectedRoom(room));
+  }
+
   return (
     <div className="border-r-2 max-h-[91.8vh] h-screen overflow-y-auto">
       <p className="text-violet-700 font-semibold text-xl text-center mt-4">Available Rooms</p>
 
-      <div className="flex flex-col gap-2 mt-6">
+      <div className="flex flex-col mt-6">
         {
           rooms.map((item) => {
-            return  <p key={item.id} className="px-7 cursor-pointer hover:bg-yellow-200 py-2 text-lg transition-all duration-300">
+            return  <p key={item.id} 
+              className={`px-7 cursor-pointer py-3 text-lg transition-all duration-300 ${item.id === selectedRoom?.id ? ' bg-yellow-400': 'hover:bg-yellow-100'}`}
+              onClick={() => handleSelect(item)}
+            >
               {item.name}
             </p>
           })
