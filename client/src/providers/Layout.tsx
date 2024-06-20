@@ -7,7 +7,7 @@ import { Outlet, useLocation } from "react-router-dom"
 
 export const Layout = () => {
   const { pathname } = useLocation();
-  const auth = ['/login', 'signup'].includes(pathname);
+  const auth = ['/login', '/signup'].includes(pathname);
 
   const loading = useSelector((state: StateType) => state.global.loading);
 
