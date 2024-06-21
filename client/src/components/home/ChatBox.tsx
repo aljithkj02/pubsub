@@ -3,7 +3,7 @@ import { Message, RequestTypes, ResponseTypes } from "@src/services/types";
 import { WebSocketManager } from "@src/services/ws";
 import { StateType } from "@src/store/appStore";
 import moment from "moment";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux";
 
 export const ChatBox = () => {
@@ -12,8 +12,11 @@ export const ChatBox = () => {
   const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const selectedRoomRef = useRef(selectedRoom?.id || null);
+
   useEffect(() => {
     selectedRoom && fetchMessages();
+    selectedRoomRef.current = selectedRoom?.id || null;
   }, [selectedRoom])
 
   useEffect(() => {
@@ -25,8 +28,7 @@ export const ChatBox = () => {
     
     socket.addEventListener("message", event => {
       const res = JSON.parse(event.data);
-
-      if (res.type === ResponseTypes.NEW_MESSAGE) {
+      if (res.type === ResponseTypes.NEW_MESSAGE && res.data.roomId === selectedRoomRef.current) {
         setMessages(prev => [...prev, res.data as Message]);
       }
     });
