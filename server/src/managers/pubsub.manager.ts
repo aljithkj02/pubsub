@@ -4,6 +4,7 @@ import { createClient } from "redis";
 import { Server as WebSocketServer } from "ws";
 import { Server } from 'http'
 import { RequestMessage, RequestTypes, ResponseTypes, SendMessagePayload } from "@lib/types/ws.types";
+import { Message } from "@prisma/client";
 
 export class PubSubManager {
     private wsServer: WebSocketServer;
@@ -64,16 +65,14 @@ export class PubSubManager {
         })
 
         rooms.forEach(async ({id}) => {
-            await this.subscriber.subscribe(id.toString(), (message) => {
-                console.log({
-                    id, message
-                })
+            await this.subscriber.subscribe(id.toString(), (message: string) => {
+                this.handleSubscribedMessage(JSON.parse(message));
             })
         })
     }
 
-    async publish(roomId: number, message: string) {
-        await this.publisher.publish(roomId.toString(), message);
+    async publish(roomId: number, message: Message & { sender: string }) {
+        await this.publisher.publish(roomId.toString(), JSON.stringify(message));
     }
 
     addActiveUser(userId: number, requestInstance: WebSocketInstance) {
@@ -108,15 +107,17 @@ export class PubSubManager {
                 roomId
             }
         })
-        await this.publish(roomId, message);
-        this.roomsRegister.get(roomId)?.map((userId) => {
+        await this.publish(roomId, { sender , ...messageEntity });
+    }
+
+    handleSubscribedMessage(messageEntity: Message & { sender: string }) {
+        this.roomsRegister.get(messageEntity.roomId)?.map((userId) => {
             if (this.activeUsers.has(userId)) {
                 this.activeUsers.get(userId)?.send(JSON.stringify({
                     type: ResponseTypes.NEW_MESSAGE,
                     data: {
                         ...messageEntity,
-                        sender,
-                        me: senderId === userId
+                        me: messageEntity.senderId === userId
                     }
                 }))
             }
