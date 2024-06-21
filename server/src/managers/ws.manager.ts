@@ -16,7 +16,23 @@ export class WsManager {
         this.roomsRegister = new Map();
     }
 
-    getServer() {
+    async getServer() {
+        const rooms = await prisma.room.findMany({
+            select: {
+                id: true
+            }
+        })
+        const users = await prisma.user.findMany({
+            select: {
+                id: true
+            }
+        })
+        const userIds = users.map(({id}) => id);
+        
+        rooms.map(({id}) => {
+            this.roomsRegister.set(id, userIds);
+        })
+        
         return this.wsServer;
     }
 

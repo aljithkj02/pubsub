@@ -5,11 +5,11 @@ import { WebSocketInstance, authWsMiddleware } from '@lib/middlewares/auth.ws.mi
 import { WsManager } from './managers/ws.manager';
 import { RequestMessage, RequestTypes, SendMessagePayload } from '@lib/types/ws.types';
 
-export const createWsServer = (server: Server) => {
+export const createWsServer = async (server: Server) => {
 
     const wsManager = new WsManager(server);
 
-    const wsServer = wsManager.getServer();
+    const wsServer = await wsManager.getServer();
     
     wsServer.on('connection', async (ws: WebSocketInstance, req) => {
         const query = url.parse(req.url || '', true).query;
