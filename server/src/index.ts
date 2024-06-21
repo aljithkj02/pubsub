@@ -2,7 +2,6 @@ import http from 'http'
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import { createWsServer } from '@src/ws';
-import prisma from '@lib/db';
 import cors from 'cors'
 import { allRouter } from '@routers/index';
 

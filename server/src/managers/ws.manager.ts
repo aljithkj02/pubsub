@@ -1,4 +1,4 @@
-import { Server as WebsocketServer } from "ws";
+import { Server as WebSocketServer } from "ws";
 import { Server } from 'http'
 import { RequestMessage, RequestTypes, ResponseTypes, SendMessagePayload } from "@lib/types/ws.types";
 import { WebSocketInstance } from "@lib/middlewares/auth.ws.middleware";
@@ -6,12 +6,12 @@ import { User } from "@prisma/client";
 import prisma from "@lib/db";
 
 export class WsManager {
-    private wsServer: WebsocketServer;
+    private wsServer: WebSocketServer;
     private activeUsers: Map<number, WebSocketInstance>;
     private roomsRegister: Map<number, number[]>;
 
     constructor(server: Server) {
-        this.wsServer = new WebsocketServer({server});
+        this.wsServer = new WebSocketServer({server});
         this.activeUsers = new Map();
         this.roomsRegister = new Map();
     }
