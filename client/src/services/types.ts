@@ -1,3 +1,10 @@
+export enum ResponseTypes {
+    NEW_MESSAGE = 'NEW_MESSAGE'
+}
+
+export enum RequestTypes {
+    SEND = 'SEND'
+}
 
 export type Room = {
     id: number;

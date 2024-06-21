@@ -1,6 +1,6 @@
 import { getMessages } from "@src/services/chat";
-import { Message } from "@src/services/types";
-import { websocketManager } from "@src/services/ws";
+import { Message, RequestTypes, ResponseTypes } from "@src/services/types";
+import { WebSocketManager } from "@src/services/ws";
 import { StateType } from "@src/store/appStore";
 import moment from "moment";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
@@ -8,17 +8,31 @@ import { useSelector } from "react-redux";
 
 export const ChatBox = () => {
   const [text, setText] = useState('');
+  const [wsSocket, setWsSocket] = useState<WebSocket | null>(null);
   const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     selectedRoom && fetchMessages();
+  }, [selectedRoom])
+
+  useEffect(() => {
+    const websocketManager = new WebSocketManager();
+
     const socket = websocketManager.getSocket();
 
+    setWsSocket(socket);
+    
     socket.addEventListener("message", event => {
-      console.log("Message from server ", event.data)
+      const res = JSON.parse(event.data);
+
+      if (res.type === ResponseTypes.NEW_MESSAGE) {
+        setMessages(prev => [...prev, res.data as Message]);
+      }
     });
-  }, [selectedRoom])
+
+    return () => websocketManager.closeSocket();
+  }, [])
 
   const handleChangeText = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -26,6 +40,7 @@ export const ChatBox = () => {
   
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    wsSocket?.send(JSON.stringify({ type: RequestTypes.SEND, data: { message: text, roomId: selectedRoom?.id as number }}));
     setText('');
   }
 
