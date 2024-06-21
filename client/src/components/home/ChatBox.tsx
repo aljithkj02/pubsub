@@ -23,7 +23,6 @@ export const ChatBox = () => {
 
   useEffect(() => {
     const flag = Number(search.split('=').pop()) % 2 == 0;
-    console.log({flag})
     const websocketManager = new WebSocketManager(flag);
 
     const socket = websocketManager.getSocket();
