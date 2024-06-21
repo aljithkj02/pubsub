@@ -31,6 +31,9 @@ export const authWsMiddleware = async (ws: WebSocketInstance, token: string) => 
         ws.user = user;
 
     } catch (error) {
-        return ws.close(401, (error as Error).message);
+        ws.send(JSON.stringify({
+            type: ErrorTypes.UNAUTHORIZED
+        }))
+        return ws.terminate();
     }
 }

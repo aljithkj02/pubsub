@@ -24,7 +24,6 @@ export const createWsServer = (server: Server) => {
 
         ws.on('message', (message) => {
             const requestMessage: RequestMessage = JSON.parse(message.toString());
-            console.log(JSON.parse(message.toString()));
 
             wsManager.handleRequest(requestMessage, ws);
         })
@@ -33,7 +32,5 @@ export const createWsServer = (server: Server) => {
             wsManager.removeClosedUser(ws.user?.id as number);
             console.log(ws.user?.name, 'disconnected!');
         })
-
-        // ws.send("Hello Client");
     })
 }

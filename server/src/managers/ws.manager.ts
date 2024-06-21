@@ -1,8 +1,9 @@
 import { Server as WebsocketServer } from "ws";
 import { Server } from 'http'
-import { RequestMessage, RequestTypes, SendMessagePayload } from "@lib/types/ws.types";
+import { RequestMessage, RequestTypes, ResponseTypes, SendMessagePayload } from "@lib/types/ws.types";
 import { WebSocketInstance } from "@lib/middlewares/auth.ws.middleware";
 import { User } from "@prisma/client";
+import prisma from "@lib/db";
 
 export class WsManager {
     private wsServer: WebsocketServer;
@@ -19,8 +20,26 @@ export class WsManager {
         return this.wsServer;
     }
 
-    handleSend(data: SendMessagePayload) {
+    async handleSend({ senderId, message, roomId, sender }: SendMessagePayload) {
+        const messageEntity = await prisma.message.create({
+            data: {
+                senderId,
+                text: message,
+                roomId
+            }
+        })
 
+        this.roomsRegister.get(roomId)?.map((userId) => {
+            if (this.activeUsers.has(userId)) {
+                this.activeUsers.get(userId)?.send(JSON.stringify({
+                    type: ResponseTypes.NEW_MESSAGE,
+                    data: {
+                        ...messageEntity,
+                        sender
+                    }
+                }))
+            }
+        })
     }
 
     async addActiveUser(userId: number, requestInstance: WebSocketInstance) {
@@ -48,7 +67,8 @@ export class WsManager {
             case RequestTypes.SEND: 
                 this.handleSend({
                     ...requestMessage.data,
-                    senderId: ws.user?.id
+                    senderId: ws.user?.id,
+                    sender: ws.user?.name
                 } as SendMessagePayload)
                 break;
         
