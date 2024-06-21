@@ -18,7 +18,7 @@ export const createWsServer = (server: Server) => {
         await authWsMiddleware(ws, query.token as string);
 
         // Store Ws Request instance
-        wsManager.addActiveUser(ws.user?.id as number, ws);
+        await wsManager.addActiveUser(ws.user?.id as number, ws);
 
         console.log(ws.user?.name, 'connected!');
 
@@ -26,18 +26,7 @@ export const createWsServer = (server: Server) => {
             const requestMessage: RequestMessage = JSON.parse(message.toString());
             console.log(JSON.parse(message.toString()));
 
-            switch (requestMessage.type) {
-                case RequestTypes.SEND: 
-                    wsManager.handleSend({
-                        ...requestMessage.data,
-                        senderId: ws.user?.id
-                    } as SendMessagePayload)
-                    break;
-            
-                default:
-                    console.log('Sorry None of the types matched.')
-                    break;
-            }
+            wsManager.handleRequest(requestMessage, ws);
         })
 
         ws.on('close', () => {
