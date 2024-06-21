@@ -8,12 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 export const Rooms = () => {
 
   const [rooms, setRooms] = useState<Room[]>([]);
-  const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
+  const {selectedRoom, refetch} = useSelector((state: StateType) => state.room);
   const dispatch = useDispatch();
 
   useEffect(() => {
     fetchAllRooms();
-  }, [])
+  }, [refetch])
 
   const fetchAllRooms = async () => {
     const res: Room[] = await getAllRooms();

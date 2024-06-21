@@ -3,10 +3,12 @@ import { Room } from "@src/services/types";
 
 export interface RoomInitialState {
     selectedRoom: Room | null;
+    refetch: boolean;
 }
 
 const initialState: RoomInitialState = {
-    selectedRoom: null
+    selectedRoom: null,
+    refetch: false
 }
 
 const roomSlice = createSlice({
@@ -15,9 +17,12 @@ const roomSlice = createSlice({
     reducers: {
         setSelectedRoom: (state, action) => {
             state.selectedRoom = action.payload;
+        },
+        handleRefetch: (state) => {
+            state.refetch = !state.refetch;
         }
     } 
 })
 
 export default roomSlice.reducer;
-export const { setSelectedRoom } = roomSlice.actions;
+export const { setSelectedRoom, handleRefetch } = roomSlice.actions;

@@ -35,7 +35,8 @@ export class WsManager {
                     type: ResponseTypes.NEW_MESSAGE,
                     data: {
                         ...messageEntity,
-                        sender
+                        sender,
+                        me: senderId === userId
                     }
                 }))
             }

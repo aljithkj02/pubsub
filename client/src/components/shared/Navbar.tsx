@@ -3,10 +3,13 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AddRoomModal } from '@components/home/AddRoomModal'
 import { createRoom } from "@src/services/chat";
+import { useDispatch } from "react-redux";
+import { handleRefetch } from "@src/store/slices/room.slice";
 
 export const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -19,6 +22,7 @@ export const Navbar = () => {
 
     const handleAdd = async (text: string) => {
         await createRoom({ name: text });
+        dispatch(handleRefetch());
         setShowModal(false);
     }
 
