@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -b",
-    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+    "ws-dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server2.ts"
   },
   "keywords": [],
   "author": "",

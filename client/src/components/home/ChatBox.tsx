@@ -5,12 +5,14 @@ import { StateType } from "@src/store/appStore";
 import moment from "moment";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 export const ChatBox = () => {
   const [text, setText] = useState('');
   const [wsSocket, setWsSocket] = useState<WebSocket | null>(null);
   const selectedRoom = useSelector((state: StateType) => state.room.selectedRoom);
   const [messages, setMessages] = useState<Message[]>([]);
+  const {search} = useLocation();
 
   const selectedRoomRef = useRef(selectedRoom?.id || null);
 
@@ -20,7 +22,9 @@ export const ChatBox = () => {
   }, [selectedRoom])
 
   useEffect(() => {
-    const websocketManager = new WebSocketManager();
+    const flag = Number(search.split('=').pop()) % 2 == 0;
+    console.log({flag})
+    const websocketManager = new WebSocketManager(flag);
 
     const socket = websocketManager.getSocket();
 
