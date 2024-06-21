@@ -1,4 +1,5 @@
 import prisma from "@lib/db";
+import { ErrorTypes } from "@lib/types/ws.types";
 import { verifyToken } from "@lib/utils/jwt.util";
 import { User } from "@prisma/client";
 import { WebSocket } from "ws";
@@ -10,15 +11,21 @@ export interface WebSocketInstance extends WebSocket {
 export const authWsMiddleware = async (ws: WebSocketInstance, token: string) => {
     try {
         if (!token) {
-            return ws.close(401, 'Unauthorized!');
+            ws.send(JSON.stringify({
+                type: ErrorTypes.UNAUTHORIZED
+            }))
+            return ws.terminate();
         }
-
+        
         const isVerified = verifyToken(token);
         
         const user = await prisma.user.findUnique({ where: { id: isVerified.id }});
 
         if (!user) {
-            return ws.close(401, 'Unauthorized!');
+            ws.send(JSON.stringify({
+                type: ErrorTypes.UNAUTHORIZED
+            }))
+            return ws.terminate();
         }
 
         ws.user = user;

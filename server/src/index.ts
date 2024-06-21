@@ -25,7 +25,6 @@ app.use('/api', allRouter);
 
 server.listen(8000, async () => {
     createWsServer(server);
-    await prisma.user.findFirst();
     console.log("Server started on Port", 8000);
 })
 
